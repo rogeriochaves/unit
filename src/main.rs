@@ -24,7 +24,7 @@ SUBCOMMANDS:
     );
     std::process::exit(0);
   }
-  unit::run(Path::new(filename))?;
+  unit::run(Path::new(""), Path::new(filename))?;
 
   Ok(())
 }

@@ -8,6 +8,6 @@ mod tests {
 
   #[test]
   fn it_works() {
-    assert_eq!(2, 1 + 1);
+    assert_eq!(4, 2 + 2);
   }
 }
