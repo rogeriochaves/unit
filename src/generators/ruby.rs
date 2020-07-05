@@ -4,6 +4,7 @@ use std::fs;
 use std::path::Path;
 extern crate inflector;
 use inflector::Inflector;
+use simple_error::bail;
 
 pub struct Std();
 
@@ -16,14 +17,19 @@ impl Generator for Std {
     let test_file_name = format!("test_{}.rb", file_stem);
     let test_folder = root.join(Path::new("test").join(child_path));
     let test_path = test_folder.join(test_file_name);
-    println!("test_path: {:?}", test_path);
+    if test_path.exists() {
+      bail!(format!(
+        "Test file already exists. Run it with `ruby {}`",
+        &test_path.to_str().unwrap(),
+      ));
+    }
 
     let levels_up = vec!["../"; child_path.components().count() + 1].join("");
     let path_without_extension = path.with_extension("");
 
     fs::create_dir_all(test_folder).unwrap_or_default();
     fs::write(
-      test_path,
+      &test_path,
       format!(
         r#"require_relative "{}{}"
 require "test/unit"
@@ -40,12 +46,10 @@ end
       ),
     )?;
 
+    println!(
+      "Test file created! Run it with `ruby test {}`",
+      &test_path.to_str().unwrap()
+    );
     Ok(())
-  }
-
-  fn test_is_present(&self, _path: &Path) -> Result<bool, Box<dyn Error>> {
-    Ok(false)
-    // let content = fs::read_to_string(path)?;
-    // Ok(content.contains("#[test]"))
   }
 }

@@ -1,4 +1,5 @@
 use super::Generator;
+use simple_error::bail;
 use std::error::Error;
 use std::fs;
 use std::path::Path;
@@ -9,6 +10,13 @@ impl Generator for Std {
   fn create_test(&self, root: &Path, path: &Path) -> Result<(), Box<dyn Error>> {
     let path = root.join(path);
     let mut content = fs::read_to_string(&path)?;
+
+    if content.contains("#[test]") {
+      bail!(format!(
+        "{} has already tests on it. Run it with `cargo test`",
+        &path.to_str().unwrap()
+      ));
+    }
 
     content = format!(
       r#"{}
@@ -25,13 +33,12 @@ mod tests {{
       content
     );
 
-    fs::write(path, content)?;
+    fs::write(&path, content)?;
 
+    println!(
+      "Tests added to file {}. Run it with `cargo test`",
+      &path.to_str().unwrap()
+    );
     Ok(())
-  }
-
-  fn test_is_present(&self, path: &Path) -> Result<bool, Box<dyn Error>> {
-    let content = fs::read_to_string(path)?;
-    Ok(content.contains("#[test]"))
   }
 }

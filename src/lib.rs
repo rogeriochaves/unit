@@ -18,15 +18,7 @@ pub fn run(root: &Path, path: &Path) -> Result<(), Box<dyn Error>> {
     .get(0)
     .ok_or("No generators available for this file")?;
 
-  if generator.test_is_present(&path)? {
-    println!(
-      "Test already created for {}. Run it with `cargo test`",
-      path.to_str().unwrap()
-    );
-  } else {
-    generator.create_test(&root, &path)?;
-    println!("Done! Run test with `cargo test`");
-  }
+  generator.create_test(&root, &path)?;
 
   Ok(())
 }

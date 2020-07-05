@@ -1,6 +1,7 @@
 use unit;
 mod helper;
 use helper::compare_files;
+use std::fs;
 use std::path::Path;
 
 #[test]
@@ -16,17 +17,22 @@ fn it_adds_test_for_ruby_files() {
   compare_files(&generated_path, &expected_path);
 }
 
-// #[test]
-// fn it_does_not_add_test_for_ruby_files_twice() {
-//   let examples_path = helper::get_examples_path();
-//   let sample_path = Path::new("ruby/std/lib.rs");
-//   let expected_path = examples_path.join("ruby/std/lib.expected.rs");
+#[test]
+fn it_does_not_overwrite_existing_test_for_ruby_files() {
+  let examples_path = helper::get_examples_path().join("ruby/std");
+  let sample_path = Path::new("app/user.rb");
 
-//   unit::run(&sample_path).unwrap();
-//   unit::run(&sample_path).unwrap();
+  unit::run(&examples_path, &sample_path).unwrap();
 
-//   compare_files(&sample_path, &expected_path);
-// }
+  let generated_path = examples_path.join("test/test_user.rb");
+  let generated_content = fs::read_to_string(&generated_path).unwrap();
+  fs::write(&generated_path, generated_content + "updated").unwrap();
+
+  assert!(unit::run(&examples_path, &sample_path).is_err());
+
+  let generated_content = fs::read_to_string(&generated_path).unwrap();
+  assert!(generated_content.contains("updated"));
+}
 
 #[test]
 fn it_adds_test_for_nested_ruby_files() {

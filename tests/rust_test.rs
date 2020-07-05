@@ -21,7 +21,7 @@ fn it_does_not_add_test_for_rust_files_twice() {
   let expected_path = examples_path.join("rust/std/lib.expected.rs");
 
   unit::run(Path::new(""), &sample_path).unwrap();
-  unit::run(Path::new(""), &sample_path).unwrap();
+  assert!(unit::run(Path::new(""), &sample_path).is_err());
 
   compare_files(&sample_path, &expected_path);
 }
