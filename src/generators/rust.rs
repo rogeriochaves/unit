@@ -7,6 +7,10 @@ use std::path::Path;
 pub struct Std();
 
 impl Generator for Std {
+  fn option_name(&self) -> &'static str {
+    "std"
+  }
+
   fn create_test(&self, root: &Path, path: &Path) -> Result<(), Box<dyn Error>> {
     let path = root.join(path);
     let mut content = fs::read_to_string(&path)?;

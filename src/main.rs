@@ -16,16 +16,22 @@ Universal Test Generator (unit)
 setup and create tests for any programming language
 
 USAGE:
-  unit [FILE]
-  unit <SUBCOMMAND>
+  unit [FILE] [OPTIONS]
 
-SUBCOMMANDS:
-  setup create all the necessary bootstrap for running tests on your project
+OPTIONS:
+  --available shows all test runners generators available for that file
 "#
     );
     std::process::exit(0);
   }
-  unit::run(Path::new(""), Path::new(filename))?;
+
+  let generator = args
+    .get(2)
+    .map(|x| x.replace("--", ""))
+    .unwrap_or(String::from("std"));
+
+  let current_dir = env::current_dir()?;
+  unit::run(&current_dir, Path::new(filename), &generator)?;
 
   Ok(())
 }

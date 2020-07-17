@@ -9,7 +9,7 @@ fn it_adds_test_for_rust_files() {
   let sample_path = examples_path.join("rust/std/lib.rs");
   let expected_path = examples_path.join("rust/std/lib.expected.rs");
 
-  unit::run(Path::new(""), &sample_path).unwrap();
+  unit::run(Path::new(""), &sample_path, "std").unwrap();
 
   compare_files(&sample_path, &expected_path);
 }
@@ -20,8 +20,8 @@ fn it_does_not_add_test_for_rust_files_twice() {
   let sample_path = examples_path.join("rust/std/lib.rs");
   let expected_path = examples_path.join("rust/std/lib.expected.rs");
 
-  unit::run(Path::new(""), &sample_path).unwrap();
-  assert!(unit::run(Path::new(""), &sample_path).is_err());
+  unit::run(Path::new(""), &sample_path, "std").unwrap();
+  assert!(unit::run(Path::new(""), &sample_path, "std").is_err());
 
   compare_files(&sample_path, &expected_path);
 }
