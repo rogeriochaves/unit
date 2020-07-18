@@ -12,6 +12,7 @@ fn available_generators(path: &Path) -> Vec<Box<dyn Generator>> {
       Box::new(generators::ruby::Rspec {}),
     ],
     "py" => vec![Box::new(generators::python::Std {})],
+    "js" => vec![Box::new(generators::javascript::Jest {})],
     _ => vec![],
   }
 }

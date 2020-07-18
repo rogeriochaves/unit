@@ -17,10 +17,12 @@ lazy_static! {
 }
 
 pub fn get_examples_path() -> PathBuf {
-  let mut examples_tmp_cleaned = TESTS_EXAMPLES_TMP_CLEANED.lock().unwrap();
-  if !*examples_tmp_cleaned {
-    fs_extra::remove_items(&vec!["tests/.examples.tmp"]).unwrap_or_default();
-    *examples_tmp_cleaned = true;
+  {
+    let mut examples_tmp_cleaned = TESTS_EXAMPLES_TMP_CLEANED.lock().unwrap();
+    if !*examples_tmp_cleaned {
+      fs_extra::remove_items(&vec!["tests/.examples.tmp"]).unwrap_or_default();
+      *examples_tmp_cleaned = true;
+    }
   }
   let current_dir = &TESTS_ORIGINAL_DIR;
 

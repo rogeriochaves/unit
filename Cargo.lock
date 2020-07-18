@@ -155,6 +155,7 @@ dependencies = [
  "fs_extra",
  "lazy_static",
  "rand",
+ "regex",
  "simple-error",
 ]
 

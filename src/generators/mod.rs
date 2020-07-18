@@ -1,5 +1,6 @@
 use std::error::Error;
 use std::path::{Path, PathBuf};
+pub mod javascript;
 pub mod python;
 pub mod ruby;
 pub mod rust;
