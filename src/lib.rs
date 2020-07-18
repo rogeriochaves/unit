@@ -2,6 +2,7 @@ use std::error::Error;
 use std::path::Path;
 mod generators;
 use generators::Generator;
+use simple_error::bail;
 
 fn available_generators(path: &Path) -> Vec<Box<dyn Generator>> {
   let extension = path.extension().and_then(|x| x.to_str()).unwrap_or("");
@@ -18,16 +19,30 @@ fn available_generators(path: &Path) -> Vec<Box<dyn Generator>> {
 }
 
 pub fn run(root: &Path, path: &Path, test_runner: &str) -> Result<(), Box<dyn Error>> {
-  let generators = available_generators(&path)
-    .into_iter()
+  let generators_for_file = available_generators(&path);
+  if generators_for_file.is_empty() {
+    bail!("No generators available for this file");
+  }
+
+  let matching_generators = generators_for_file
+    .iter()
     .filter(|x| x.option_name() == test_runner)
-    .collect::<Vec<Box<dyn Generator>>>();
+    .collect::<Vec<&Box<dyn Generator>>>();
 
-  let generator = generators
-    .first()
-    .ok_or("No generators available for this file")?;
+  let generator = matching_generators.first();
 
-  generator.create_test(&root, &path)?;
-
-  Ok(())
+  match generator {
+    None => {
+      let generators_for_file_names = generators_for_file
+        .iter()
+        .map(|x| format!("--{}", x.option_name()))
+        .collect::<Vec<String>>();
+      bail!(format!(
+        "No {} generator found for this file, available generators: {}",
+        test_runner,
+        generators_for_file_names.join(", ")
+      ));
+    }
+    Some(generator) => generator.create_test(&root, &path),
+  }
 }
