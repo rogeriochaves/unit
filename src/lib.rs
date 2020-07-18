@@ -24,6 +24,19 @@ pub fn run(root: &Path, path: &Path, test_runner: &str) -> Result<(), Box<dyn Er
     bail!("No generators available for this file");
   }
 
+  let generators_for_file_names = generators_for_file
+    .iter()
+    .map(|x| format!("--{}", x.option_name()))
+    .collect::<Vec<String>>();
+
+  if test_runner == "available" {
+    println!(
+      "Available generators: {}",
+      generators_for_file_names.join(", ")
+    );
+    return Ok(());
+  }
+
   let matching_generators = generators_for_file
     .iter()
     .filter(|x| x.option_name() == test_runner)
@@ -33,10 +46,6 @@ pub fn run(root: &Path, path: &Path, test_runner: &str) -> Result<(), Box<dyn Er
 
   match generator {
     None => {
-      let generators_for_file_names = generators_for_file
-        .iter()
-        .map(|x| format!("--{}", x.option_name()))
-        .collect::<Vec<String>>();
       bail!(format!(
         "No {} generator found for this file, available generators: {}",
         test_runner,
