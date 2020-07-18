@@ -153,6 +153,7 @@ dependencies = [
  "Inflector",
  "cmd_lib",
  "fs_extra",
+ "lazy_static",
  "rand",
  "simple-error",
 ]

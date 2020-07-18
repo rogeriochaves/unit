@@ -2,40 +2,27 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 extern crate fs_extra;
+extern crate lazy_static;
 extern crate rand;
 
+use lazy_static::lazy_static;
 use rand::distributions::Alphanumeric;
 use rand::Rng;
 use std::env;
+use std::sync::Mutex;
 
-struct Cleaning {
-  state: u16,
-  current_dir: Option<PathBuf>,
+lazy_static! {
+  static ref TESTS_EXAMPLES_TMP_CLEANED: Mutex<bool> = Mutex::new(false);
+  static ref TESTS_ORIGINAL_DIR: PathBuf = env::current_dir().unwrap();
 }
-impl Cleaning {
-  fn done(&mut self) -> bool {
-    if self.current_dir.is_none() {
-      self.current_dir = Some(env::current_dir().unwrap());
-    }
-    if self.state == 0 {
-      self.state = 1;
-      fs_extra::remove_items(&vec!["tests/.examples.tmp"]).unwrap_or_default();
-      self.state = 2;
-    }
-    return self.state == 2;
-  }
-}
-static mut EXAMPLE_TMP_CLEANING: Cleaning = Cleaning {
-  state: 0,
-  current_dir: None,
-};
 
 pub fn get_examples_path() -> PathBuf {
-  // Workaround to be sure to clean the folder before the first run, to preven
-  // keep creating new folders forever
-  while unsafe { !EXAMPLE_TMP_CLEANING.done() } {}
-  let current_dir = unsafe { &EXAMPLE_TMP_CLEANING.current_dir };
-  let current_dir = current_dir.as_ref().unwrap();
+  let mut examples_tmp_cleaned = TESTS_EXAMPLES_TMP_CLEANED.lock().unwrap();
+  if !*examples_tmp_cleaned {
+    fs_extra::remove_items(&vec!["tests/.examples.tmp"]).unwrap_or_default();
+    *examples_tmp_cleaned = true;
+  }
+  let current_dir = &TESTS_ORIGINAL_DIR;
 
   fs::create_dir(current_dir.join("tests/.examples.tmp")).unwrap_or_default();
 
