@@ -23,29 +23,15 @@ impl Generator for Jest {
     let package_json_path = root.join("package.json");
     let mut package_json = fs::read_to_string(&package_json_path)?;
 
-    let root_str = root.to_str().unwrap();
-    let current_dir = env::current_dir()?;
-    let current_dir = current_dir.to_str().unwrap();
     if !package_json.contains("jest") {
+      let current_dir = env::current_dir()?;
+      env::set_current_dir(root.to_str().unwrap())?;
       if root.join("yarn.lock").exists() {
-        (run_cmd! {
-          use root_str, current_dir;
-
-          cd ${root_str}
-          yarn add jest --dev
-          cd ${current_dir}
-        })
-        .unwrap();
+        run_cmd!("yarn add jest --dev").unwrap();
       } else {
-        (run_cmd! {
-          use root_str, current_dir;
-
-          cd ${root_str}
-          npm install --save-dev jest
-          cd ${current_dir}
-        })
-        .unwrap();
+        run_cmd!("npm install --save-dev jest").unwrap();
       }
+      env::set_current_dir(current_dir)?;
 
       package_json = fs::read_to_string(&package_json_path)?;
       if !package_json.contains(r#""test":"#) {

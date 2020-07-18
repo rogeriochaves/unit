@@ -75,18 +75,11 @@ impl Generator for Rspec {
       fs::write(&gemfile_path, gemfile)?;
     }
 
-    let root_str = root.to_str().unwrap();
     let current_dir = env::current_dir()?;
-    let current_dir = current_dir.to_str().unwrap();
-    (run_cmd! {
-      use root_str, current_dir;
-
-      cd ${root_str}
-      /usr/bin/bundle install --binstubs
-      bin/rspec --init
-      cd ${current_dir}
-    })
-    .unwrap();
+    env::set_current_dir(root.to_str().unwrap())?;
+    run_cmd!("/usr/bin/bundle install --binstubs").unwrap();
+    run_cmd!("bin/rspec --init").unwrap();
+    env::set_current_dir(current_dir)?;
 
     Ok(())
   }
