@@ -1,7 +1,9 @@
 use std::env;
 use std::error::Error;
 use std::path::Path;
+extern crate colored;
 extern crate simple_error;
+use colored::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
   let args: Vec<String> = env::args().collect();
@@ -30,8 +32,13 @@ OPTIONS:
     .map(|x| x.replace("--", ""))
     .unwrap_or(String::from("std"));
 
-  let current_dir = env::current_dir()?;
-  unit::run(&current_dir, Path::new(filename), &generator)?;
+  let result = unit::run(Path::new(""), Path::new(filename), &generator);
 
-  Ok(())
+  match result {
+    Err(message) => {
+      eprintln!("{}", format!("{}", message).red());
+      std::process::exit(1);
+    }
+    Ok(_) => Ok(()),
+  }
 }

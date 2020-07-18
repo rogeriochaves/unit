@@ -5,6 +5,8 @@ pub mod python;
 pub mod ruby;
 pub mod rust;
 use simple_error::bail;
+extern crate colored;
+use colored::*;
 
 pub trait Generator {
   fn option_name(&self) -> &'static str;
@@ -16,7 +18,7 @@ pub trait Generator {
   fn check_existing(&self, test_path: &Path) -> Result<(), Box<dyn Error>> {
     if test_path.exists() {
       bail!(format!(
-        "Test file already exists. Run it with `{}`",
+        "Test file already exists. Run it with:\n\n{}\n",
         self.run_command(test_path),
       ));
     }
@@ -24,8 +26,12 @@ pub trait Generator {
   }
   fn success_message(&self, test_path: &Path) {
     println!(
-      "Test file created! Run it with `{}`",
-      self.run_command(test_path),
+      "{}",
+      format!(
+        "Test file created! Run it now:\n\n{}\n",
+        self.run_command(test_path)
+      )
+      .green()
     );
   }
   fn path_destructing<'a>(&self, path: &'a Path) -> (&'a Path, &'a str, PathBuf, String) {

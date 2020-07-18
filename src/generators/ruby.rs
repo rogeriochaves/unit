@@ -69,14 +69,18 @@ impl Generator for Rspec {
     }
 
     let gemfile_path = root.join("Gemfile");
-    let mut gemfile = fs::read_to_string(&gemfile_path)?;
+    let mut gemfile = fs::read_to_string(&gemfile_path).or(Err(
+      "Gemfile not found, it is necessary for installing rspec",
+    ))?;
     if !gemfile.contains("rspec") {
       gemfile = gemfile + "\n\ngem 'rspec', '~> 3.0'\n";
       fs::write(&gemfile_path, gemfile)?;
     }
 
     let current_dir = env::current_dir()?;
-    env::set_current_dir(root.to_str().unwrap())?;
+    if root.to_str().unwrap() != "" {
+      env::set_current_dir(root.to_str().unwrap())?;
+    }
     run_cmd!("/usr/bin/bundle install --binstubs").unwrap();
     run_cmd!("bin/rspec --init").unwrap();
     env::set_current_dir(current_dir)?;

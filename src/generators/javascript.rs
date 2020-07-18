@@ -25,7 +25,9 @@ impl Generator for Jest {
 
     if !package_json.contains("jest") {
       let current_dir = env::current_dir()?;
-      env::set_current_dir(root.to_str().unwrap())?;
+      if root.to_str().unwrap() != "" {
+        env::set_current_dir(root.to_str().unwrap())?;
+      }
       if root.join("yarn.lock").exists() {
         run_cmd!("yarn add jest --dev").unwrap();
       } else {
