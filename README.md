@@ -31,3 +31,15 @@ $ unit src/user.rb --rspec
 | JavaScript | jest         |
 
 The "std" test runner stands for the default test runner that comes with the language and requires no dependencies to be installed. It is the default selection if no option is specified.
+
+## Contributing
+
+If you'd like to support a new language or test framework, first create a new example project for it under `tests/examples/mylanguage/mytestrunner`. Then create or edit the test file for it on `tests/mylanguage_test.rs`.
+
+You can follow the examples of other tests like `tests/javascript_test.rs` or `tests/python_test.rs`, and then run it with:
+
+`cargo test mylanguage`
+
+You will need to have [rust installed](https://www.rust-lang.org/tools/install) to run cargo.
+
+Then you can implement the generator, on `src/generators/mylanguage.rs`. Again, follow the examples of other modules, then add it to `src/generators/mod.rs` and `src/lib.rs` on the `available_generators` function.
