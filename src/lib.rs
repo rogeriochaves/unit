@@ -7,7 +7,10 @@ use simple_error::bail;
 fn available_generators(path: &Path) -> Vec<Box<dyn Generator>> {
   let extension = path.extension().and_then(|x| x.to_str()).unwrap_or("");
   match extension {
-    "rs" => vec![Box::new(generators::rust::Std {})],
+    "rs" => vec![
+      Box::new(generators::rust::Std {}),
+      Box::new(generators::rust::Integration {}),
+    ],
     "rb" => vec![
       Box::new(generators::ruby::Std {}),
       Box::new(generators::ruby::Rspec {}),

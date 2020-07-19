@@ -50,3 +50,47 @@ mod tests {{
     Ok(())
   }
 }
+
+pub struct Integration();
+
+impl Generator for Integration {
+  fn option_name(&self) -> &'static str {
+    "integration"
+  }
+
+  fn run_command(&self, _test_path: &Path) -> String {
+    String::from("cargo test")
+  }
+
+  fn create_test(&self, root: &Path, path: &Path) -> Result<(), Box<dyn Error>> {
+    let (child_path, file_stem, _, _) = self.path_destructing(&path);
+
+    let test_folder = root.join("tests").join(child_path);
+    let test_file_name = format!("{}_test.rs", file_stem);
+    let test_path = test_folder.join(test_file_name);
+    self.bail_if_existing(&test_path)?;
+
+    let rust_module = child_path
+      .join(&file_stem)
+      .to_str()
+      .unwrap()
+      .replace("/", "::");
+    fs::create_dir_all(test_folder).unwrap_or_default();
+    fs::write(
+      &test_path,
+      format!(
+        r#"use {};
+
+#[test]
+fn it_works() {{
+  assert_eq!(1 + 1, 2);
+}}
+"#,
+        rust_module,
+      ),
+    )?;
+
+    self.success_message(&test_path);
+    Ok(())
+  }
+}
