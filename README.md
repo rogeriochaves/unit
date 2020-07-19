@@ -23,12 +23,13 @@ $ unit src/user.rb --rspec
 
 ## Suported Languages
 
-| Language   | Test Runners |
-| ---------- | ------------ |
-| Ruby       | std, rspec   |
-| Rust       | std          |
-| Python     | std          |
-| JavaScript | jest         |
+| Language   | Test Runners     |
+| ---------- | ---------------- |
+| JavaScript | jest             |
+| Perl       | std, test-spec   |
+| Python     | std              |
+| Ruby       | std, rspec       |
+| Rust       | std, integration |
 
 The "std" test runner stands for the default test runner that comes with the language and requires no dependencies to be installed. It is the default selection if no option is specified.
 
