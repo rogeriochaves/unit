@@ -14,7 +14,10 @@ fn available_generators(path: &Path) -> Vec<Box<dyn Generator>> {
     ],
     "py" => vec![Box::new(generators::python::Std {})],
     "js" => vec![Box::new(generators::javascript::Jest {})],
-    "pm" => vec![Box::new(generators::perl::Std {})],
+    "pm" => vec![
+      Box::new(generators::perl::Std {}),
+      Box::new(generators::perl::TestSpec {}),
+    ],
     _ => vec![],
   }
 }
