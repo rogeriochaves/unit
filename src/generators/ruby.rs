@@ -26,7 +26,7 @@ impl Generator for Std {
     let test_folder = root.join("test").join(child_path);
     let test_file_name = format!("test_{}.rb", file_stem);
     let test_path = test_folder.join(test_file_name);
-    self.check_existing(&test_path)?;
+    self.bail_if_existing(&test_path)?;
 
     fs::create_dir_all(test_folder).unwrap_or_default();
     fs::write(
@@ -96,7 +96,7 @@ impl Generator for Rspec {
     let test_folder = root.join("spec").join(child_path);
     let test_file_name = format!("{}_spec.rb", file_stem);
     let test_path = test_folder.join(test_file_name);
-    self.check_existing(&test_path)?;
+    self.bail_if_existing(&test_path)?;
 
     fs::create_dir_all(test_folder).unwrap_or_default();
     fs::write(

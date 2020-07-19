@@ -60,7 +60,7 @@ impl Generator for Jest {
     let file_folder = full_path.parent().unwrap();
     let test_file_name = format!("{}.test.js", file_stem);
     let test_path = file_folder.join(test_file_name);
-    self.check_existing(&test_path)?;
+    self.bail_if_existing(&test_path)?;
 
     fs::write(
       &test_path,

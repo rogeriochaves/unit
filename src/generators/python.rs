@@ -24,7 +24,7 @@ impl Generator for Std {
     let test_folder = root.join("tests").join(child_path);
     let test_file_name = format!("test_{}.py", file_stem);
     let test_path = test_folder.join(test_file_name);
-    self.check_existing(&test_path)?;
+    self.bail_if_existing(&test_path)?;
 
     fs::create_dir_all(test_folder).unwrap_or_default();
     fs::write(

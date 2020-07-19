@@ -1,6 +1,7 @@
 use std::error::Error;
 use std::path::{Path, PathBuf};
 pub mod javascript;
+pub mod perl;
 pub mod python;
 pub mod ruby;
 pub mod rust;
@@ -15,7 +16,7 @@ pub trait Generator {
   fn setup(&self, _root: &Path) -> Result<(), Box<dyn Error>> {
     Ok(())
   }
-  fn check_existing(&self, test_path: &Path) -> Result<(), Box<dyn Error>> {
+  fn bail_if_existing(&self, test_path: &Path) -> Result<(), Box<dyn Error>> {
     if test_path.exists() {
       bail!(format!(
         "Test file already exists. Run it with:\n\n{}\n",
