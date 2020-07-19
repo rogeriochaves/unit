@@ -21,6 +21,7 @@ fn available_generators(path: &Path) -> Vec<Box<dyn Generator>> {
       Box::new(generators::perl::Std {}),
       Box::new(generators::perl::TestSpec {}),
     ],
+    "elm" => vec![Box::new(generators::elm::ElmTest {})],
     _ => vec![],
   }
 }

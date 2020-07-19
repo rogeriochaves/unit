@@ -25,6 +25,7 @@ $ unit src/user.rb --rspec
 
 | Language   | Test Runners     |
 | ---------- | ---------------- |
+| Elm        | elm-test         |
 | JavaScript | jest             |
 | Perl       | std, test-spec   |
 | Python     | std              |
