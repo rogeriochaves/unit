@@ -27,6 +27,7 @@ $ unit src/user.rb --rspec
 | ---------- | ---------------- |
 | Clojure    | std              |
 | Elm        | elm-test         |
+| Java       | junit            |
 | JavaScript | jest             |
 | Perl       | std, test-spec   |
 | Python     | std              |
