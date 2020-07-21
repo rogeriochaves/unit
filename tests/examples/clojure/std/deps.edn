@@ -1,0 +1,6 @@
+{:paths ["src" "resource" "test"]
+
+:aliases
+{:test-path
+  {:extra-paths ["test"]}}
+}

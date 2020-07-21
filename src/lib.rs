@@ -22,6 +22,7 @@ fn available_generators(path: &Path) -> Vec<Box<dyn Generator>> {
       Box::new(generators::perl::TestSpec {}),
     ],
     "elm" => vec![Box::new(generators::elm::ElmTest {})],
+    "clj" => vec![Box::new(generators::clojure::Std {})],
     _ => vec![],
   }
 }
