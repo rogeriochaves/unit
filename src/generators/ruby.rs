@@ -81,7 +81,8 @@ impl Generator for Rspec {
     if root.to_str().unwrap() != "" {
       env::set_current_dir(root.to_str().unwrap())?;
     }
-    run_cmd!("/usr/bin/bundle install --binstubs").unwrap();
+    run_cmd!("bundle install --binstubs")
+      .expect("Fail to run bundle install, make sure you have ruby and bundler");
     run_cmd!("bin/rspec --init").unwrap();
     env::set_current_dir(current_dir)?;
 
