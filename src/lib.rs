@@ -52,7 +52,11 @@ pub fn run(root: &Path, path: &Path, test_runner: &str) -> Result<(), Box<dyn Er
     .filter(|x| x.option_name() == test_runner)
     .collect::<Vec<&Box<dyn Generator>>>();
 
-  let generator = matching_generators.first();
+  let mut generator = matching_generators.first().map(|x| *x);
+
+  if generator.is_none() && test_runner == "std" {
+    generator = generators_for_file.get(0);
+  }
 
   match generator {
     None => {

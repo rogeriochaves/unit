@@ -34,7 +34,7 @@ $ unit src/user.rb --rspec
 | Ruby       | std, rspec       |
 | Rust       | std, integration |
 
-The "std" test runner stands for the default test runner that comes with the language and requires no dependencies to be installed. It is the default selection if no option is specified.
+The "std" test runner stands for the default test runner that comes with the language and requires no dependencies to be installed.
 
 ## Contributing
 
