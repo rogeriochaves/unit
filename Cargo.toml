@@ -3,8 +3,13 @@ name = "unit"
 version = "0.1.0"
 authors = ["Rogerio Chaves <rogeriocfj@gmail.com>"]
 edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "MIT OR Apache-2.0"
+description = "Universal Test Generator"
+readme = "README.md"
+homepage = "https://github.com/rogeriochaves/unit"
+repository = "https://github.com/you/grrs"
+keywords = ["cli", "tests"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 Inflector = "0.11.4"
