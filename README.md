@@ -8,7 +8,14 @@ With unit, a simple `unit path/to/file` command will set up your test runner for
 
 ## Instalation
 
-Download the binary on packages tab
+For Mac, you can install using [brew](https://brew.sh/)
+
+```bash
+brew tap rogeriochaves/tap
+brew install unit
+```
+
+For Linux and Windows, download the binary on [releases page](https://github.com/rogeriochaves/unit/releases)
 
 ## Usage example
 
