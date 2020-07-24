@@ -18,6 +18,19 @@ fn it_adds_test_for_ruby_files() {
 }
 
 #[test]
+fn it_adds_test_for_ruby_files_outside_any_folders() {
+  let examples_path = helper::get_examples_path().join("ruby/std");
+  let sample_path = Path::new("main.rb");
+
+  unit::run(&examples_path, &sample_path, "std").unwrap();
+
+  let generated_path = examples_path.join("test/test_main.rb");
+  let expected_path = examples_path.join("test.expected/test_main.rb");
+
+  compare_files(&generated_path, &expected_path);
+}
+
+#[test]
 fn it_does_not_overwrite_existing_test_for_ruby_files() {
   let examples_path = helper::get_examples_path().join("ruby/std");
   let sample_path = Path::new("app/user.rb");

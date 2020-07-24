@@ -39,8 +39,14 @@ pub trait Generator {
     );
   }
   fn path_destructing<'a>(&self, path: &'a Path) -> (&'a Path, &'a str, PathBuf, String) {
-    let first_parent = path.iter().next().unwrap();
-    let child_path = path.strip_prefix(first_parent).unwrap().parent().unwrap();
+    let first_parent = path
+      .iter()
+      .next()
+      .expect("Could not find first parent path");
+    let child_path_with_file = path
+      .strip_prefix(first_parent)
+      .expect("Could not remove parent from child path");
+    let child_path = child_path_with_file.parent().unwrap_or(Path::new(""));
 
     let file_stem = path.file_stem().unwrap().to_str().unwrap();
     let path_without_extension = path.with_extension("");
