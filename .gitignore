@@ -1,2 +1,4 @@
 /target
 tests/.examples.tmp
+__pycache__
+elm-stuff
