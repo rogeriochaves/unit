@@ -35,6 +35,7 @@ $ unit src/user.rb --rspec
 | Language   | Test Runners     |
 | ---------- | ---------------- |
 | Clojure    | std              |
+| Elixir     | std              |
 | Elm        | elm-test         |
 | Java       | junit            |
 | JavaScript | jest             |

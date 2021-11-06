@@ -1,6 +1,7 @@
 use std::error::Error;
 use std::path::{Path, PathBuf};
 pub mod clojure;
+pub mod elixir;
 pub mod elm;
 pub mod java;
 pub mod javascript;

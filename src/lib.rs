@@ -24,6 +24,7 @@ fn available_generators(path: &Path) -> Vec<Box<dyn Generator>> {
     "elm" => vec![Box::new(generators::elm::ElmTest {})],
     "clj" => vec![Box::new(generators::clojure::Std {})],
     "java" => vec![Box::new(generators::java::JUnit {})],
+    "ex" => vec![Box::new(generators::elixir::Std {})],
     _ => vec![],
   }
 }
