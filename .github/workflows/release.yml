@@ -102,6 +102,8 @@ jobs:
           path: artifacts
 
       - name: Set release upload URL and release version
+        env:
+            ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         shell: bash
         run: |
           release_upload_url="$(cat artifacts/release-upload-url)"
@@ -118,6 +120,8 @@ jobs:
         run: strip "target/${{ matrix.target }}/release/unit"
 
       - name: Build archive
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         shell: bash
         run: |
           echo "ls target/release >"
