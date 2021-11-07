@@ -83,6 +83,8 @@ jobs:
           target: ${{ matrix.target }}
 
       - name: Use Cross
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         run: |
           cargo install --git https://github.com/rust-embedded/cross
           echo "::set-env name=CARGO::cross"
